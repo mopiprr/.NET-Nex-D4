@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useLive } from "./LiveProvider";
 
 export default function NewOrdersBadge() {
+  // const { now, pending, checkedAt } = useLive();
+
   const { pending, checkedAt } = useLive();
   const [now, setNow] = useState<number | null>(null);
 

@@ -19,11 +19,16 @@ export default async function OrderDetailPage({
   const user = await getCurrentUser();
 
   // Context for staff: how busy was that day, how popular is each pizza
-  const dayOrderCount = await getDayOrderCount(order.date);
-  const soldThatDay: number[] = [];
-  for (const line of order.lines) {
-    soldThatDay.push(await getPizzaSoldOnDay(line.pizzaId, order.date));
-  }
+  // const dayOrderCount = await getDayOrderCount(order.date);
+  // const soldThatDay: number[] = [];
+  // for (const line of order.lines) {
+  //   soldThatDay.push(await getPizzaSoldOnDay(line.pizzaId, order.date));
+  // }
+
+  const [dayOrderCount, soldThatDay] = await Promise.all([
+    getDayOrderCount(order.date),
+    Promise.all(order.lines.map((line) => getPizzaSoldOnDay(line.pizzaId, order.date))),
+  ]);
 
   return (
     <section className="max-w-3xl">
