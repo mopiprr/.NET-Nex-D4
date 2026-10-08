@@ -1,10 +1,11 @@
 "use client";
 
-import { createContext, use, useEffect, useState } from "react";
+import { createContext, use, useEffect, useState, useMemo } from "react";
+import { formatPrice } from "@/lib/format";
 
 // Everything "live" in the dashboard, in one place
 type Live = {
-  now: number | null;
+  // now: number | null;
   pending: number | null;
   checkedAt: number | null;
   formatPrice: (value: number) => string;
@@ -13,15 +14,15 @@ type Live = {
 const LiveContext = createContext<Live | null>(null);
 
 export function LiveProvider({ children }: { children: React.ReactNode }) {
-  const [now, setNow] = useState<number | null>(null);
+  // const [now, setNow] = useState<number | null>(null);
   const [pending, setPending] = useState<number | null>(null);
   const [checkedAt, setCheckedAt] = useState<number | null>(null);
 
   // A clock for "checked 3 s ago"
-  useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(id);
-  }, []);
+  // useEffect(() => {
+  //   const id = setInterval(() => setNow(Date.now()), 1000);
+  //   return () => clearInterval(id);
+  // }, []);
 
   // Ask the server for the number of waiting orders every 5 seconds
   useEffect(() => {
@@ -37,10 +38,17 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
     return () => clearInterval(id);
   }, []);
 
-  const formatPrice = (value: number) =>
-    new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+  // const formatPrice = (value: number) =>
+  //   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
 
-  return <LiveContext value={{ now, pending, checkedAt, formatPrice }}>{children}</LiveContext>;
+  const value = useMemo( ()=> ({
+    pending, checkedAt, formatPrice 
+  }),
+  [pending, checkedAt],
+  );
+
+  // return <LiveContext value={{ now, pending, checkedAt, formatPrice }}>{children}</LiveContext>;
+  return <LiveContext value={value}>{children}</LiveContext>
 }
 
 export function useLive(): Live {
