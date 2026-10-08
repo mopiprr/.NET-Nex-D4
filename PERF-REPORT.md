@@ -11,7 +11,7 @@ Cara mengukur (selalu sama):
 | # | Keluhan | Alat ukur | Metrik | Sebelum | Hipotesis | Perbaikan | Sesudah |
 |---|---|---|---|---|---|---|---|
 | A | Filter analitik terasa lambat saat mengetik | Devtools -> Performance | scripting time (?) | 1. 655ms; 2. 694ms; 3. 974ms m= 774ms | H1:perhitungan O(n^2) di jalur ketikan -> hitung sekali dengan algo linear;   H2:Seteleh itu, render 1.000 baris per ketikan masih memblokir input -> biarkan input update dulu, table menyusul (useDeferredValue) | deferredQuery diperbaiki karena sebelumnya merender 2kali | 1. 515ms;  2. 514ms; 3. 433ms |
-| B | Dashboard makin berat kalau dibiarkan terbuka | Devtools -> show performance monitor | tiap detik terjadi lonjakan padahal tidak ada aktivitas apa apa | | | | |
+| B | Dashboard makin berat kalau dibiarkan terbuka | Devtools -> show performance monitor | LiveProvider ada state now yang diperbarui tiap detik. Selain itu di SalesExplorer juga ada  | tiap detik terjadi lonjakan padahal tidak ada aktivitas apa apa | | | |
 | C | Overview lambat di laptop staf | | | | | | |
 | D | Detail order lama terbuka | | | | | | |
 
