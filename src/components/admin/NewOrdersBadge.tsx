@@ -4,15 +4,12 @@ import { useEffect, useState } from "react";
 import { useLive } from "./LiveProvider";
 
 export default function NewOrdersBadge() {
-  // const { now, pending, checkedAt } = useLive();
   const { pending, checkedAt } = useLive();
-
   const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
-    setNow(Date.now());
-    const id = setInterval(() => setNow(Date.now()), 1000 );
-    return ()=> clearInterval(id);
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
   }, []);
 
   if (pending === null) return null;

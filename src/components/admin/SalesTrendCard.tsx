@@ -1,15 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import {
-  CartesianGrid,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import dynamic from "next/dynamic";
+
+const TrendChart = dynamic(() => import("./TrendChart"), {
+  loading: () => <p className="mt-4 animate-pulse text-sm text-ink/60">Memuat grafik…</p>,
+});
 
 type Point = { date: string; revenue: number; orders: number };
 
@@ -47,19 +43,7 @@ export default function SalesTrendCard({ trend }: { trend: Point[] }) {
       >
         {showChart ? "Sembunyikan grafik" : "Tampilkan grafik"}
       </button>
-      {showChart && (
-        <div className="mt-4 h-64" data-testid="trend-chart">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={trend}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" tick={{ fontSize: 11 }} />
-              <YAxis tick={{ fontSize: 11 }} />
-              <Tooltip formatter={(value) => usd.format(Number(value))} />
-              <Line type="monotone" dataKey="revenue" stroke="#b91c1c" dot={false} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      )}
+      {showChart && <TrendChart trend={trend} />}
     </div>
   );
 }
